@@ -4,8 +4,7 @@ import datetime as dt
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from Bot.google_doc.googleSheets import get_record, get_id_admins
 
-scheduler = AsyncIOScheduler()
-
+scheduler = AsyncIOScheduler(timezone="Asia/Novosibirsk")
 
 # №	id_photo	описание	Ответственный	id_responsible	Дедлайн	Чаты_публикации
 async def mail_notif(bot: Bot, id_record: int):

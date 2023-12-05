@@ -3,7 +3,6 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.filters.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 from aiogram.exceptions import *
-from pydantic import ValidationError
 
 from Bot.google_doc.googleSheets import get_id_responsible, get_id_chat, save_tz
 from Bot.reminder.general import add_notif
