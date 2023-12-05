@@ -33,17 +33,17 @@ def get_id_chat() -> list:
 
 def get_record(num_record: int, name_list: str) -> list:
     worksheet = sheet.worksheet(name_list)
-    data = worksheet.get(f"A{num_record+1}:D{num_record+1}")
-    return data[0]
+    data = worksheet.get_all_values()
+    return data[num_record]
 
 
-def save_tz(data: dict):
+def save_tz(data: dict) -> int:
     worksheet = sheet.worksheet("TZ")
     num_record = len(worksheet.get_all_values())
     chats = " ".join([i[0] for i in data["chat"]])
-    list_row = [num_record, data["id_photo"], data["text"], data["response"][0], data["data"], chats]
+    list_row = [num_record, data["id_photo"], data["text"], data["response"][0], data["response"][1], data["data"], chats]
     worksheet.append_row(list_row)
-
+    return num_record
 
 
 

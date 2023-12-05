@@ -6,6 +6,7 @@ from aiogram.exceptions import *
 from pydantic import ValidationError
 
 from Bot.google_doc.googleSheets import get_id_responsible, get_id_chat, save_tz
+from Bot.reminder.general import add_notif
 from Bot.function import check_data
 from Bot.keyboard import general as kb
 
@@ -104,7 +105,7 @@ async def set_chat_id(mess: Message, state: FSMContext):
         photo_id = msg.photo[-1].file_id
         await state.update_data({"id_photo": photo_id})
     await mess.answer(f"Описание:\n{data_all['text']}\n"
-                      f"Ответственный: {data_all['response'][0]}\n"
+                      f"Ответственный: <a href=\'{data_all['response'][2]}\'>{data_all['response'][0]}</a>\n"
                       f"Дедлайн: {data_all['data']}\n"
                       f"Отправляем в чаты: {' '.join([i[0] for i in chat])}",
                       reply_markup=kb.check_tz())
@@ -115,9 +116,10 @@ async def set_chat_id(mess: Message, state: FSMContext):
 async def save_push_tz(call: CallbackQuery, state: FSMContext, bot: Bot):
     await call.message.edit_text("Запущен процесс рассылки!", reply_markup=None)
     data_tz = await state.get_data()
-    save_tz(data_tz)
+    num_record = save_tz(data_tz)
     list_mail = [data_tz["response"][1]] + [i[1] for i in data_tz["chat"]]
     dict_mail = {data_tz["response"][1]: data_tz["response"][0]}
+    add_notif(num_record, bot, data_tz["data"])
     for j in data_tz["chat"]:
         dict_mail[j[1]]=j[0]
     for i in list_mail:

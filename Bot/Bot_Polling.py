@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.fsm.storage.memory import MemoryStorage
 
+from Bot.reminder.general import scheduler
 from Bot.handlers import *
 from function import admins
 
@@ -26,15 +27,17 @@ async def stop(message: types.Message):
 
 
 async def on_startup():
-    await bot.delete_webhook()
-    await bot.send_message(admins[0], "Бот запущен")
     await bot.delete_webhook(drop_pending_updates=True)
+    scheduler.start()
+    await bot.send_message(admins[0], "Бот запущен")
+
     return
 
 
 async def on_shutdown():
     await bot.send_message(admins[0], "Бот выключен")
     await dp.storage.close()
+    await bot.close()
     return
 
 
