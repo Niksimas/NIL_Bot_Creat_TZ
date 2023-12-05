@@ -25,7 +25,7 @@ async def mail_notif(bot: Bot, id_record: int):
 
 def add_notif(id_record: int, bot: Bot, data: str):
     data_list = data.split(".")
-    data_start = dt.datetime(int(data_list[2]), int(data_list[1]), int(data_list[0]), 8, 0) - dt.timedelta(days=7)
+    data_start = dt.datetime(int(data_list[2]), int(data_list[1]), int(data_list[0]), 8, 0) - dt.timedelta(days=1)
     print(data_start)
     if data_start > dt.datetime.today():
         scheduler.add_job(mail_notif, "date",
